@@ -11,6 +11,9 @@ time = data_file[:,0]
 # parse good sensor data from imported data
 sensors = data_file[:,1:5]
 
+time1 = time[0] + time[1]
+print(time1)
+
 # display the first 6 sensor rows
 print(sensors[0:6])
 
