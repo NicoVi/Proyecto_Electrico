@@ -16,16 +16,24 @@ RainHourData = RainData[:,3]
 RainValue = RainData[:,4]
 
 #Reading from txt format attenuation data:
-AttnData = np.genfromtxt('Rain.txt', delimiter=';')
+AttnData = np.genfromtxt('Attenuation.txt', delimiter=';')
 AttnYearData = AttnData[:,0]
 AttnMonthData = AttnData[:,1]
 AttnDayData = AttnData[:,2]
 AttnHourData = AttnData[:,3]
 AttnValue = AttnData[:,4]
 
+#Testing and generate X and Y matrix
+X = np.array([])
+Y = np.array([])
+for x in xrange(0, len(RainData)):
+    if (RainYearData[x] == AttnYearData[x])and(RainMonthData[x] == AttnMonthData[x])and(RainDayData[x] == AttnDayData[x])and(RainHourData[x] == AttnHourData[x]):
+        X = np.insert(X, x, AttnValue[x])
+        Y = np.insert(Y, x, RainValue[x])
 
-print(len(RainData))
-print(rm.random()*10)
+#
+
+
 
 
 def Hypothesis():
