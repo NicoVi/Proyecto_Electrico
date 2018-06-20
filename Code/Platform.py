@@ -1,10 +1,16 @@
 import time
-import Code
+import Calibrate
+import AttenAlert
 
-def runCode():
+##################### CALIBRATION AND HYPOTHESIS ###############################
+Calibrate.RunCalibrate()
 
-    Code.main()
+
+################################################################################
+def runPlataform():
+
+
     time.sleep(10)
 
 while True:
-    runCode()
+    runPlataform()
