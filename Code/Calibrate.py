@@ -41,6 +41,9 @@ plt.xlabel("Samples")
 plt.ylabel("Data")
 plt.ion()
 plt.plot(Y)
+plt.plot(X, label = "Attenuation")
+plt.plot(Y, label = "Rain")
+plt.legend(loc="center") 
 plt.savefig('DataVsSamples.png')
 #plt.show()
 ValuesGraph3D = plt.figure()
@@ -50,7 +53,7 @@ plt.savefig('3DPlot.png')
 #plt.show()
 
 
-########################## MULTIPLE LINEAR REGRESSION METHOD ##########################################################
+##################### MULTIPLE LINEAR REGRESSION METHOD ########################
 
 
 #Generate necesary coeficients
@@ -86,11 +89,12 @@ def GradientDescent(X, Y, B, alpha, m, iterations):
         CostHistory[iteration] = Cost
     return B, CostHistory
 
-############################ HYPOTHESIS VALUES ########################################################################
+
+############################ HYPOTHESIS VALUES #################################
+
 
 def RunCalibrate():
     BForH, CostHistory = GradientDescent(Xmatrix, Y, B, alpha, m, 100000)
-def CalibrationResults():
     H_X0 = BForH[0]
     H_X1 = BForH[1]
     return H_X0, H_X1

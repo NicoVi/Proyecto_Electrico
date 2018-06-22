@@ -3,14 +3,15 @@ import Calibrate
 import AttenAlert
 
 ##################### CALIBRATION AND HYPOTHESIS ###############################
-Calibrate.RunCalibrate()
 
+B0, B1 = Calibrate.RunCalibrate()
 
 ################################################################################
-def runPlataform():
+def RunPlataform():
 
-
+    AttenAlert.YCalc(5, B0, B1)
     time.sleep(10)
 
+######################### INFINITE LOOP ########################################
 while True:
-    runPlataform()
+    RunPlataform()
