@@ -1,4 +1,6 @@
 from tkinter import *
+import datetime
+import time
 
 ########################## MAIN WINDOW CONFIG ##################################
 
@@ -7,16 +9,24 @@ window.title("Estimacion de precipitacion")
 window.geometry('1200x650')
 window.resizable(0,0)
 window.config(bg="white")
-
+import Calibrate
+import AttenAlert
+TimerFlag = True
+B0, B1 = Calibrate.RunCalibrate()
 ############################# FRAMES CONFIG ####################################
 
 linkDetail = Frame()
 linkDetail.pack()
-linkDetail.config(bg="white")
-linkDetail.config(width="1200", height="50")
-linkDetail.place(x=0,y=0)
-Label(linkDetail, text="Detalle del enlace San Pedro - UCR", bg="white", font=("Times New Roman",15)).place(x=500, y=15)
-
+def linkDetailTimer():
+    linkDetail.config(bg="white")
+    linkDetail.config(width="1200", height="50")
+    linkDetail.place(x=0,y=0)
+    Label(linkDetail, text="Detalle del enlace San Pedro - UCR", bg="white", font=("Times New Roman",15)).place(x=500, y=1)
+    updateTime = datetime.datetime.now().strftime("%H:%M:%S")
+    Label(linkDetail,text= "Ultima actualizacion a las: ", bg="white", font=("Times New Roman",10)).place(x=548, y=22)
+    Label(linkDetail,text= updateTime, bg="white", font=("Times New Roman",10)).place(x=698, y=22)
+    if(TimerFlag):
+        window.after(5000, linkDetailTimer)
 
 rainStatus = Frame()
 rainStatus.pack()
@@ -31,7 +41,7 @@ rainGraph.config(bg="white")
 rainGraph.config(width="600", height="500")
 rainGraph.place(x=0,y=150)
 rGImage = PhotoImage(file="DataVsSamples.png")
-Label(rainGraph, image=rGImage).place(x=0, y=0)
+Label(rainGraph, image=rGImage).place(x=-1, y=-1)
 
 
 calibrateInfo = Frame()
@@ -49,9 +59,7 @@ gisShow.place(x=600,y=150)
 
 
 
-
-#graph1 = PhotoImage(file="DataVsSamples.png")
-#Label(window, image=graph1, bg= "white") .grid(row=0, column=0, sticky=W)
+linkDetailTimer()
 
 
 window.mainloop()

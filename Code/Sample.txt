@@ -1,2 +1,2 @@
-Year;Month;Day;Hour;
+Year;Month;Day;Hour;Attenuation Value
 2017;9;5;1;4.50E+01
