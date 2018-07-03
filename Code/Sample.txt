@@ -1,0 +1,2 @@
+Year;Month;Day;Hour;
+2017;9;5;1;4.50E+01

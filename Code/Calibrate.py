@@ -35,7 +35,7 @@ for x in xrange(0, len(RainData)):
 
 
 #Plotting for example
-ValuesGraph2D = plt.figure(1)
+ValuesGraph2D = plt.figure(figsize=(6,5))
 plt.plot(X)
 plt.xlabel("Samples")
 plt.ylabel("Data")
@@ -43,10 +43,10 @@ plt.ion()
 plt.plot(Y)
 plt.plot(X, label = "Attenuation")
 plt.plot(Y, label = "Rain")
-plt.legend(loc="center") 
+plt.legend(loc="center")
 plt.savefig('DataVsSamples.png')
 #plt.show()
-ValuesGraph3D = plt.figure()
+ValuesGraph3D = plt.figure(figsize=(5,5))
 Axes = Axes3D(ValuesGraph3D)
 Axes.scatter(X, Y, color='#ef1434')
 plt.savefig('3DPlot.png')
