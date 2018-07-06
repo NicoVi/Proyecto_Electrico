@@ -45,12 +45,7 @@ plt.plot(X, label = "Attenuation")
 plt.plot(Y, label = "Rain")
 plt.legend(loc="center")
 plt.savefig('DataVsSamples.png')
-#plt.show()
-#ValuesGraph3D = plt.figure(figsize=(5,5))
-#Axes = Axes3D(ValuesGraph3D)
-#Axes.scatter(X, Y, color='#ef1434')
-#plt.savefig('3DPlot.png')
-#plt.show()
+
 
 
 ##################### MULTIPLE LINEAR REGRESSION METHOD ########################

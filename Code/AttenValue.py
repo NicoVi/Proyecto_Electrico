@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import geopandas as gp
 import Calibrate
 
-############################ MAIN METHOD ###################################
-def dataToShow():
+############################ MAIN METHOD #######################################
+def getAttenValue(B0, B1):
 ########################## INPUT VALUES ########################################
     AttenSample = np.genfromtxt('Sample.txt', delimiter=';')
     AttenSampleYear = AttenSample[:,0]
@@ -13,7 +13,7 @@ def dataToShow():
     AttenSampleHour = AttenSample[:,3]
     AttenSampleValue = AttenSample[:,4]
 ############################ HYPOTHESIS RESULT CALC ############################
-def YCalc(X, B0, B1):
-    Y = B0 + B1*X
-    print(B0, B1)
-    return Y
+    x = AttenSampleValue[1]
+    y = B0 + (B1 * x)
+
+    return y
