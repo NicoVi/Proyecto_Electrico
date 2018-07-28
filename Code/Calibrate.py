@@ -58,7 +58,7 @@ Xmatrix = np.array([X0, X]).T
 # Initial Values for the method
 B = np.array([0, 0])
 Ymatrix = Y
-alpha = 0.0001
+alpha = 0.001
 
 
 #Cost function algorithm
@@ -89,7 +89,7 @@ def GradientDescent(X, Y, B, alpha, m, iterations):
 
 
 def RunCalibrate():
-    BForH, CostHistory = GradientDescent(Xmatrix, Y, B, alpha, m, 100000)
+    BForH, CostHistory = GradientDescent(Xmatrix, Y, B, alpha, m, 1000000)
     H_X0 = BForH[0]
     H_X1 = BForH[1]
     return H_X0, H_X1

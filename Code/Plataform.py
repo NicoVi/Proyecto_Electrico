@@ -12,7 +12,7 @@ window.config(bg="white")
 ##################### IMPORT THE CALIBRATION AND ALERT #########################
 
 import Calibrate
-import AttenValue
+import RainValueCalc
 
 ############################# FRAMES CONFIG ####################################
 TimerFlag = True
@@ -39,7 +39,7 @@ def rainStatusTimer():
     rainStatus.config(width="600", height="100")
     rainStatus.place(x=0,y=50)
     Label(rainStatus,text= "Para esta hora, el nivel de lluvia en los alrededores de San Pedro es:", bg="white", font=("Times New Roman",13)).place(x=50, y=15)
-    rainValue = AttenValue.getAttenValue(B0, B1)
+    rainValue = RainValueCalc.getRainValue(B0, B1)
     rainLevel = ""
     if rainValue <= 0.1:
         rainLevel = "Nulo"
@@ -54,13 +54,18 @@ def rainStatusTimer():
     if(TimerFlag):
         window.after(5000, rainStatusTimer)
 
-rainGraph = Frame()
-rainGraph.pack()
-rainGraph.config(bg="red")
-rainGraph.config(width="600", height="500")
-rainGraph.place(x=0,y=150)
-rGImage = PhotoImage(file="DataVsSamples.png")
-Label(rainGraph, image=rGImage).place(x=-1, y=-1)
+
+def rainGraphTimer():
+    rainGraph = Frame()
+    rainGraph.pack()
+    rainGraph.config(bg="red")
+    rainGraph.config(width="600", height="500")
+    rainGraph.place(x=0,y=150)
+    rGImage = PhotoImage(file="DataVsSamples.png")
+    Label(rainGraph, image=rGImage).place(x=-1, y=-1)
+    if(TimerFlag):
+        window.after(5000, rainGraphTimer)
+
 
 
 calibrateInfo = Frame()
@@ -83,7 +88,9 @@ gisShow.place(x=600,y=150)
 Label(gisShow,text= "Detalle del enlace:", bg="white", font=("Times New Roman",13)).place(x=5, y=5)
 
 
+rainGraphTimer()
 linkDetailTimer()
 rainStatusTimer()
+
 
 window.mainloop()

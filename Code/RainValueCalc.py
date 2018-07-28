@@ -4,7 +4,7 @@ import geopandas as gp
 import Calibrate
 
 ############################ MAIN METHOD #######################################
-def getAttenValue(B0, B1):
+def getRainValue(B0, B1):
 ########################## INPUT VALUES ########################################
     AttenSample = np.genfromtxt('Sample.txt', delimiter=';')
     AttenSampleYear = AttenSample[:,0]
