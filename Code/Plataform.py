@@ -43,11 +43,11 @@ def rainStatusTimer():
     rainLevel = ""
     if rainValue <= 0.1:
         rainLevel = "Nulo"
-    elif 0.2<rainValue<=5:
+    elif 0.2<rainValue<=2:
         rainLevel = "Bajo"
-    elif 5.1<rainValue<=18:
+    elif 2.1<rainValue<=5:
         rainLevel = "Alto"
-    elif 18.1<rainValue<=40:
+    elif 5.1<rainValue<=20:
         rainLevel = "Muy Alto"
     Label(rainStatus,text= rainLevel, bg="white", font=("Times New Roman",16)).place(x=280, y=60)
     print(rainValue)
