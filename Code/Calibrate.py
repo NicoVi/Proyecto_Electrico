@@ -2,79 +2,90 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (20.0, 10.0)
-from mpl_toolkits.mplot3d import Axes3D
-
+from datetime import date
 
 
 #Reading from txt format rain data:
-#RainData = np.genfromtxt('Rain.txt', delimiter=';')
-RainData = np.genfromtxt('RealRain.txt', delimiter=';')
-#RainYearData = RainData[:,0]
-#RainMonthData = RainData[:,1]
-#RainDayData = RainData[:,2]
-#RainHourData = RainData[:,3]
-#RainValue = RainData[:,4]
-RainValue = RainData[:,1]
-RainDate = RainData[:,0]
+RainData = np.genfromtxt('Data/RealRain.txt', delimiter=',')
+RainYearData = RainData[:,0]
+RainMonthData = RainData[:,1]
+RainDayData = RainData[:,2]
+RainHourData = RainData[:,3]
+RainValue = RainData[:,4]
+
 
 
 #Reading from txt format attenuation data:
-#AttnData = np.genfromtxt('Attenuation.txt', delimiter=';')
-AttnData = np.genfromtxt('RealAtten.txt', delimiter=',')
-#AttnYearData = AttnData[:,0]
-#AttnMonthData = AttnData[:,1]
-#AttnDayData = AttnData[:,2]
-#AttnHourData = AttnData[:,3]
-#AttnValue = AttnData[:,4]
-AttnValue = AttnData[:,1]
-AttnDate = AttnData[:,0]
+AttnData = np.genfromtxt('Data/RealAtten.txt', delimiter=',')
+AttnYearData = AttnData[:,0]
+AttnMonthData = AttnData[:,1]
+AttnDayData = AttnData[:,2]
+AttnHourData = AttnData[:,3]
+AttnValue = AttnData[:,4]
+
 
 
 #Testing and generate X and Y matrix
 X = np.array([])
 Y = np.array([])
+xList = []
 for x in xrange(0, len(RainData)):
-    #if (RainYearData[x] == AttnYearData[x])and(RainMonthData[x] == AttnMonthData[x])and(RainDayData[x] == AttnDayData[x])and(RainHourData[x] == AttnHourData[x]):
-    #if (AttnDate[x] == RainDate[x]):
-        Xnorm = AttnValue[x]
-        Ynorm = RainValue[x]
-        X = np.insert(X, x, Xnorm)
-        Y = np.insert(Y, x, Ynorm)
+    if (RainYearData[x] == AttnYearData[x])and(RainMonthData[x] == AttnMonthData[x])and(RainDayData[x] == AttnDayData[x])and(RainHourData[x] == AttnHourData[x]):
+        X = np.insert(X, x, AttnValue[x])
+        Y = np.insert(Y, x, RainValue[x])
+        if((x%200)==0):
+            DateS = date(int(RainYearData[x]), int(RainMonthData[x]), int(RainDayData[x]))
+            DateL = DateS.strftime("%d %B %Y")
+            TimeX = '{:02d}:{:02d}'.format(*divmod(int(RainHourData[x]), 60))
+            xList += [DateL+" "+TimeX]
+        else:
+            xList += [" "]
 
+#Atten data show
+ValuesGraph2D = plt.figure()
+plt.rc('xtick', labelsize=6)
+plt.title('Muestras de atenuacion del 15 de junio al 22 de junio')
+plt.xticks(range(len(X)), xList, rotation=25)
+plt.plot(X)
+plt.ylabel("Atenuacion")
+plt.savefig('Images/Atenuacion.png')
 
+#Rain data show
+rainGraphShow = plt.figure()
+plt.rc('xtick', labelsize=6)
+plt.title('Muestras de lluvia del 15 de junio al 22 de junio')
+plt.xticks(range(len(Y)), xList, rotation=25)
+plt.plot(Y)
+plt.ylabel("Lluvia (mm)")
+plt.savefig('Images/Lluvia.png')
 
-#Plotting for example
-ValuesGraph2D = plt.figure(figsize=(6,5))
+#Full calibration show
+CalibrationShow = plt.figure()
 plt.subplot(2, 1, 1)
-plt.title('Data comparison attenuation and rain')
+plt.title('Comparacion de muestras de lluvia y atenuacion')
 plt.grid(True)
 plt.plot(X)
-plt.ylabel("Attenuation")
+plt.ylabel("Atenuacion (dB)")
 plt.subplot(2, 1, 2)
 plt.plot(Y)
-plt.ylabel('Rain')
-plt.xlabel("Samples")
+plt.ylabel('Lluvia (mm)')
+plt.xlabel("Total de datos")
 plt.grid(True)
-plt.savefig('DataVsSamples.png')
-
-
+plt.savefig('Images/Calibration.png')
 
 ##################### MULTIPLE LINEAR REGRESSION METHOD ########################
 
 #Generate necesary coeficients
+Ynorm = np.array([])
+for x in xrange(0, len(RainData)):
+    Ynorm = np.insert(Ynorm, x, RainValue[x]*10)
 m = len(Y)
 X0 = np.ones(m)
 Xmatrix = np.array([X0, X]).T
 # Initial Values for the method
 B = np.array([0, 0])
-Ymatrix = Y
+Ymatrix = Ynorm
 alpha = 0.0002
-
-print(m)
-print(X0)
-print(Xmatrix)
-print(Ymatrix)
 
 #Cost function algorithm
 def CostFunction(X, Y, B, m):
@@ -104,9 +115,7 @@ def GradientDescent(X, Y, B, alpha, m, iterations):
 
 
 def RunCalibrate():
-    BForH, CostHistory = GradientDescent(Xmatrix, Y, B, alpha, m, 1000000)
+    BForH, CostHistory = GradientDescent(Xmatrix, Ynorm, B, alpha, m, 1000000)
     H_X0 = BForH[0]
     H_X1 = BForH[1]
     return H_X0, H_X1
-
-print(RunCalibrate())

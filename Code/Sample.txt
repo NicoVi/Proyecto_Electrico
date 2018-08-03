@@ -1,2 +1,0 @@
-Year;Month;Day;Hour;Attenuation Value
-2017;9;5;1;-56.34

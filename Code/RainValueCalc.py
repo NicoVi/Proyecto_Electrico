@@ -6,14 +6,14 @@ import Calibrate
 ############################ MAIN METHOD #######################################
 def getRainValue(B0, B1):
 ########################## INPUT VALUES ########################################
-    AttenSample = np.genfromtxt('Sample.txt', delimiter=';')
-    AttenSampleYear = AttenSample[:,0]
-    AttenSampleMonth = AttenSample[:,1]
-    AttenSampleDay = AttenSample[:,2]
-    AttenSampleHour = AttenSample[:,3]
-    AttenSampleValue = AttenSample[:,4]
+    AttenSampleData = np.genfromtxt('AttenGenerator/Sample.txt', delimiter=';')
+    AttenSampleYear = AttenSampleData[0]
+    AttenSampleMonth = AttenSampleData[1]
+    AttenSampleDay = AttenSampleData[2]
+    AttenSampleHour = AttenSampleData[3]
+    AttenSampleValue = AttenSampleData[4]
 ############################ HYPOTHESIS RESULT CALC ############################
-    x = AttenSampleValue[1]
+    x = AttenSampleValue
     y = B0 + (B1 * x)
 
-    return y
+    return y, x
