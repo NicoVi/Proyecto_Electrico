@@ -40,7 +40,7 @@ for x in xrange(0, len(RainData)):
             xList += [DateL+" "+TimeX]
         else:
             xList += [" "]
-
+'''
 #Atten data show
 ValuesGraph2D = plt.figure()
 plt.rc('xtick', labelsize=6)
@@ -73,19 +73,41 @@ plt.xlabel("Total de datos")
 plt.grid(True)
 plt.savefig('Images/Calibration.png')
 
+#Data plot
+dataHistShow = plt.figure()
+plt.title('Datos Historicos Lluvia vs Atenuacion')
+plt.scatter(X,Y)
+plt.grid(True)
+plt.ylabel("Lluvia (mm)")
+plt.ylabel("Atenuacion (dB)")
+plt.savefig('Images/DataHist.png')
+'''
+
 ##################### MULTIPLE LINEAR REGRESSION METHOD ########################
 
 #Generate necesary coeficients
+Ymax = np.amax(Y)
+Ymin = np.amin(Y)
+Ymean = np.mean(Y)
 Ynorm = np.array([])
+for y in xrange(0, len(RainData)):
+    newY = (Y[y] - Ymean)/(Ymax - Ymin)
+    Ynorm = np.insert(Ynorm, y, newY)
+
+Xmax = np.amax(X)
+Xmin = np.amin(X)
+Xmean = np.mean(X)
+Xnorm = np.array([])
 for x in xrange(0, len(RainData)):
-    Ynorm = np.insert(Ynorm, x, RainValue[x]*10)
+    newX = (X[x] - Xmean)/(Xmax - Xmin)
+    Xnorm = np.insert(Xnorm, x, newX)
 m = len(Y)
 X0 = np.ones(m)
-Xmatrix = np.array([X0, X]).T
+Xmatrix = np.array([X0, Xnorm]).T
 # Initial Values for the method
 B = np.array([0, 0])
 Ymatrix = Ynorm
-alpha = 0.0002
+alpha = 0.01
 
 #Cost function algorithm
 def CostFunction(X, Y, B, m):
@@ -119,3 +141,29 @@ def RunCalibrate():
     H_X0 = BForH[0]
     H_X1 = BForH[1]
     return H_X0, H_X1
+
+def GetImpValues():
+    return Xmean, Xmax, Xmin, Ymean, Ymax, Ymin
+
+
+'''
+#Dispersion data show
+b0, b1 = RunCalibrate()
+print(b0, b1)
+x = np.arange(0, -1, -0.1)
+F = b0 + b1*x
+dataHipShow = plt.figure()
+plt.title('Recta resultante (Datos Normalizados)')
+plt.plot(x, F, 'r--')
+plt.ion()
+plt.scatter(Xnorm,Ynorm)
+plt.grid(True)
+plt.ylabel("Lluvia (mm)")
+plt.ylabel("Atenuacion (dB)")
+plt.savefig('Images/Aprox.png')
+A = -53
+Anorm = (A-Xmean)/(Xmax-Xmin)
+Rnorm = b0 + b1*(Anorm)
+R = ((Ymax-Ymin)*(Rnorm))+Ymean
+print(R)
+'''

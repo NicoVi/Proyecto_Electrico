@@ -3,8 +3,8 @@ from random import randrange
 import time
 
 dataYear = 2018
-dataMonth = 1
-dataDay = 1
+dataMonth = 3
+dataDay = 5
 dataHour = 555
 
 def generateSample():
