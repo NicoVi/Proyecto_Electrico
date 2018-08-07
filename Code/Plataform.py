@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from datetime import date
-
+plt.rcParams.update({'figure.max_open_warning': 0})
 import time
 import threading
 import numpy as np

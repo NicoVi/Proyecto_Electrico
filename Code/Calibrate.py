@@ -72,16 +72,16 @@ plt.ylabel('Lluvia (mm)')
 plt.xlabel("Total de datos")
 plt.grid(True)
 plt.savefig('Images/Calibration.png')
-
+'''
 #Data plot
 dataHistShow = plt.figure()
 plt.title('Datos Historicos Lluvia vs Atenuacion')
 plt.scatter(X,Y)
 plt.grid(True)
 plt.ylabel("Lluvia (mm)")
-plt.ylabel("Atenuacion (dB)")
+plt.xlabel("Atenuacion (dB)")
 plt.savefig('Images/DataHist.png')
-'''
+
 
 ##################### MULTIPLE LINEAR REGRESSION METHOD ########################
 
@@ -159,7 +159,7 @@ plt.ion()
 plt.scatter(Xnorm,Ynorm)
 plt.grid(True)
 plt.ylabel("Lluvia (mm)")
-plt.ylabel("Atenuacion (dB)")
+plt.xlabel("Atenuacion (dB)")
 plt.savefig('Images/Aprox.png')
 A = -53
 Anorm = (A-Xmean)/(Xmax-Xmin)
