@@ -48,4 +48,4 @@ def generateSample():
 
 while True:
     generateSample()
-    time.sleep(10)
+    time.sleep(5)

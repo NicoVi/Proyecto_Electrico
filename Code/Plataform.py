@@ -10,11 +10,12 @@ plt.rcParams.update({'figure.max_open_warning': 0})
 import time
 import threading
 import numpy as np
+
 ########################## MAIN WINDOW CONFIG ##################################
 
 window = Tk()
 window.title("Estimacion de precipitacion")
-window.geometry('1200x650')
+window.geometry('1300x700')
 window.resizable(0,0)
 window.config(bg="white")
 
@@ -26,6 +27,7 @@ import RainValueCalc
 ############################# DEFINITIONS ######################################
 
 TimerFlag = True
+sTime = 5000
 graphDataY = np.zeros(9)
 graphDataX = np.ones(9)*(-47)
 counterG = 0
@@ -41,16 +43,20 @@ linkDetail = Frame()
 linkDetail.pack()
 def linkDetailTimer():
     linkDetail.config(bg=clr)
-    linkDetail.config(width="1200", height="50")
+    linkDetail.config(width="1300", height="100")
     linkDetail.config(bd = 5)
     linkDetail.config(relief = "ridge")
     linkDetail.place(x=0,y=0)
-    Label(linkDetail, text="Detalle del enlace San Pedro - UCR", bg=clr, font=("Times New Roman",15)).place(x=450, y=1)
+    Label(linkDetail, text="Detalle del enlace San Pedro - UCR", bg=clr, font=("Times New Roman",15)).place(x=500, y=1)
     updateTime = datetime.datetime.now().strftime("%H:%M:%S")
-    Label(linkDetail,text= "Ultima actualizacion a las: ", bg=clr, font=("Times New Roman",10)).place(x=496, y=22)
-    Label(linkDetail,text= updateTime, bg=clr, font=("Times New Roman",10)).place(x=648, y=22)
+    #Label(linkDetail,text= "Ultima actualizacion a las: ", bg=clr, font=("Times New Roman",10)).place(x=546, y=18)
+    #Label(linkDetail,text= updateTime, bg=clr, font=("Times New Roman",10)).place(x=698, y=18)
+    Label(linkDetail, text="Este programa extrae datos de atenuacion cada cierto tiempo, los procesa y genera el calculo estimado de nivel de precipitacion equivalente, la grafica que se muestra se actualiza conforme recibe una nueva", bg=clr, font=("Times New Roman",11)).place(x=20, y=25)
+    Label(linkDetail, text="muestra. El detalle del valor promedio de precipitacion en la ultima hora se representa mediante el cambio de color en la ventana y la grafica, asi como tambien de manera textual. Los valores de atenuacion", bg=clr, font=("Times New Roman",11)).place(x=20, y=45)
+    Label(linkDetail, text="para esta demostracion son generados por un algorimo que exporta un archivo de texto a un directorio cada 5 segundos.", bg=clr, font=("Times New Roman",11)).place(x=20, y=65)
+
     if(TimerFlag):
-        window.after(10000, linkDetailTimer)
+        window.after(sTime, linkDetailTimer)
 
 
 def rainStatusTimer():
@@ -60,7 +66,7 @@ def rainStatusTimer():
     rainStatus.config(width="600", height="100")
     rainStatus.config(bd = 5)
     rainStatus.config(relief = "ridge")
-    rainStatus.place(x=0,y=50)
+    rainStatus.place(x=100,y=100)
     Label(rainStatus,text= "Para esta hora, el nivel de lluvia en los alrededores de San Pedro es:", bg="#b5c3cb", font=("Times New Roman",13)).place(x=50, y=15)
     rainLevel = ""
     if PromVal <= 0.1:
@@ -78,7 +84,7 @@ def rainStatusTimer():
     Label(rainStatus,text= "{0:.2f}".format(PromVal), bg="#b5c3cb", font=("Times New Roman",16,)).place(x=450, y=60)
     Label(rainStatus,text= "mm", bg="#b5c3cb", font=("Times New Roman",16,)).place(x=490, y=60)
     if(TimerFlag):
-        window.after(10000, rainStatusTimer)
+        window.after(sTime, rainStatusTimer)
 
 
 def rainGraphTimer():
@@ -88,7 +94,7 @@ def rainGraphTimer():
     rainGraph.config(width="600", height="500")
     rainGraph.config(bd = 5)
     rainGraph.config(relief = "ridge")
-    rainGraph.place(x=0,y=150)
+    rainGraph.place(x=100,y=200)
     global counterG
     global PromVal
     global xList
@@ -182,7 +188,7 @@ def rainGraphTimer():
     graph.draw()
 
     if(TimerFlag):
-        window.after(10000, rainGraphTimer)
+        window.after(sTime, rainGraphTimer)
 
 
 
@@ -192,7 +198,7 @@ calibrateInfo.config(bg="#b5c3cb")
 calibrateInfo.config(width="600", height="100")
 calibrateInfo.config(bd = 5)
 calibrateInfo.config(relief = "ridge")
-calibrateInfo.place(x=600,y=50)
+calibrateInfo.place(x=700,y=100)
 Label(calibrateInfo,text= "Ultima calibracion realizada a las: ", bg="#b5c3cb", font=("Times New Roman",11)).place(x=10, y=15)
 updateTime = datetime.datetime.now().strftime("%H:%M:%S")
 Label(calibrateInfo,text= updateTime, bg="#b5c3cb", font=("Times New Roman",11)).place(x=225, y=15)
@@ -206,10 +212,57 @@ gisShow.config(bg="white")
 gisShow.config(width="600", height="500")
 gisShow.config(bd = 5)
 gisShow.config(relief = "ridge")
-gisShow.place(x=600,y=150)
+gisShow.place(x=700,y=200)
 Label(gisShow,text= "Detalle geografico del enlace:", bg="white", font=("Times New Roman",13)).place(x=5, y=5)
 MapImage = PhotoImage(file="Images/Map.png")
 graphPlot = Label(gisShow, image=MapImage).place(x=50, y=50)
+
+scaleDetail = Frame()
+scaleDetail.pack()
+scaleDetail.config(bg="#b5c3cb")
+scaleDetail.config(width="100", height="100")
+scaleDetail.config(bd = 5)
+scaleDetail.config(relief = "ridge")
+scaleDetail.place(x=0,y=100)
+Label(scaleDetail,text= "Escala de", bg="#b5c3cb", font=("Times New Roman",12)).place(x=10, y=5)
+Label(scaleDetail,text= "intensidad", bg="#b5c3cb", font=("Times New Roman",12)).place(x=8, y=25)
+Label(scaleDetail,text= "de la", bg="#b5c3cb", font=("Times New Roman",12)).place(x=25, y=45)
+Label(scaleDetail,text= "Lluvia mm/h", bg="#b5c3cb", font=("Times New Roman",12)).place(x=3, y=65)
+
+
+scaleShow = Frame()
+scaleShow.pack()
+scaleShow.config(bg="white")
+scaleShow.config(width="100", height="500")
+scaleShow.config(bd = 5)
+scaleShow.config(relief = "ridge")
+scaleShow.place(x=0,y=200)
+Label(scaleShow,text= "Nulo", bg="white", font=("Times New Roman",12)).place(x=25, y=20)
+Label(scaleShow,text= "X < 0.1", bg="white", font=("Times New Roman",10)).place(x=20, y=40)
+Label(scaleShow,text= "Ligero", bg="white", font=("Times New Roman",12)).place(x=20, y=60)
+Label(scaleShow,text= "0.1 < X < 2.5", bg="white", font=("Times New Roman",10)).place(x=5, y=80)
+Label(scaleShow,text= "Moderado", bg="white", font=("Times New Roman",12)).place(x=12, y=100)
+Label(scaleShow,text= "2.5 < X < 7.6", bg="white", font=("Times New Roman",10)).place(x=5, y=120)
+Label(scaleShow,text= "Pesado", bg="white", font=("Times New Roman",12)).place(x=18, y=140)
+Label(scaleShow,text= "7.6 < X < 50", bg="white", font=("Times New Roman",10)).place(x=5, y=160)
+Label(scaleShow,text= "Violento", bg="white", font=("Times New Roman",12)).place(x=13, y=180)
+Label(scaleShow,text= "X > 50", bg="white", font=("Times New Roman",10)).place(x=20, y=200)
+
+Label(scaleShow,text= "Codigo de", bg="white", font=("Times New Roman",12)).place(x=5, y=285)
+Label(scaleShow,text= "colores:", bg="white", font=("Times New Roman",12)).place(x=15, y=308)
+Label(scaleShow,text= "             ", bg="#b5c3cb", font=("Times New Roman",13)).place(x=5, y=340)
+Label(scaleShow,text= "N", bg="White", font=("Times New Roman",13)).place(x=70, y=340)
+Label(scaleShow,text= "             ", bg="#277ece", font=("Times New Roman",13)).place(x=5, y=360)
+Label(scaleShow,text= "L", bg="White", font=("Times New Roman",13)).place(x=70, y=360)
+Label(scaleShow,text= "             ", bg="#00a563", font=("Times New Roman",13)).place(x=5, y=380)
+Label(scaleShow,text= "M", bg="White", font=("Times New Roman",13)).place(x=70, y=380)
+Label(scaleShow,text= "             ", bg="#ffc100", font=("Times New Roman",13)).place(x=5, y=400)
+Label(scaleShow,text= "P", bg="White", font=("Times New Roman",13)).place(x=70, y=400)
+Label(scaleShow,text= "             ", bg="#8e0e0e", font=("Times New Roman",13)).place(x=5, y=420)
+Label(scaleShow,text= "V", bg="White", font=("Times New Roman",13)).place(x=70, y=420)
+
+
+
 
 
 rainGraphTimer()
